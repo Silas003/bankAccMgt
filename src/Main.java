@@ -6,6 +6,7 @@ public class Main {
 
     public static void main(String[] args){
         mainMenu();
+        viewAccounts();
     }
 
     private static void mainMenu(){
@@ -32,7 +33,7 @@ public class Main {
                 createAccount();
                 break;
             case "2":
-                break;
+                viewAccounts();
             case "3":
                 break;
             case "4":
@@ -48,6 +49,7 @@ public class Main {
     }
 
     private static void createAccount(){
+        AccountManagement accManagement = new AccountManagement();
         Scanner scanner = new Scanner(System.in);
         String customerName,customerAddress,customerContact;
         String[] customerType = new String[]{
@@ -123,10 +125,12 @@ public class Main {
                 case "1":
                     if(customerTypeInput.equals("1")){
                         newSavingsAccount = accounts.new SavingsAccount("ACC001",newRegularCustomer,initialDepositAmount);
+                        accManagement.addAccount(newSavingsAccount);
                         System.out.println("Account created succesfully!");
                         System.out.println(newSavingsAccount);
                     }else{
                          newSavingsAccount = accounts.new SavingsAccount("ACC001",newPremiumCustomer,initialDepositAmount);
+                        accManagement.addAccount(newSavingsAccount);
                         System.out.println("Account created succesfully!");
                         System.out.println(newSavingsAccount);
                     }
@@ -136,10 +140,12 @@ public class Main {
                 case "2":
                     if(customerTypeInput.equals("2")){
                          newCheckingAccount = accounts.new CheckingAccount("ACC001",newRegularCustomer,initialDepositAmount);
+                        accManagement.addAccount(newCheckingAccount);
                         System.out.println("Account created succesfully!");
                         System.out.println(newCheckingAccount);
                     }else{
                          newCheckingAccount = accounts.new CheckingAccount("ACC001",newPremiumCustomer,initialDepositAmount);
+                        accManagement.addAccount(newCheckingAccount);
                         System.out.println("Account created succesfully!");
                         System.out.println(newCheckingAccount);
                     }
@@ -148,10 +154,23 @@ public class Main {
                 default:
                     System.out.println("Please select a number between of choices of [1-2]");
             }
+            scanner.close();
         }catch(NumberFormatException e){
             System.out.println("Input value must be of type integer");
             System.exit(0);
         }
-        scanner.close();
+
+    }
+
+    public static  void viewAccounts(){
+        AccountManagement accManagement = new AccountManagement();
+        System.out.println("ACCOUNT LISTING");
+        System.out.println("==============================================================================");
+        System.out.println("ACC NO | CUSTOMER NAME | TYPE | BALANCE | STATUS | INTEREST RATE | MIN BALANCE");
+        System.out.println("==============================================================================");
+
+        for(Accounts.Account account :accManagement.viewAllAccounts()){
+        System.out.printf("%s","%s","%s","%f","%s",account.getAccountNUmber(),account.getCustomer(),account.getAccountType(),account.getBalance(),account.getStatus());
+        }
     }
 }

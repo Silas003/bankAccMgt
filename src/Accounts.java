@@ -16,6 +16,7 @@ public class Accounts {
         abstract Account displayAccountDetails();
         abstract String getAccountType();
 
+
         public String getAccountNUmber(){
             return this.accountNumber;
         }
@@ -29,6 +30,7 @@ public class Accounts {
 
         public void setCustomer(Customers.Customer Customer){
             this.customer = Customer;
+
         }
 
         public double getBalance(){
@@ -123,6 +125,7 @@ public class Accounts {
             setAccountNumber(accountNumber);
             setCustomer(customer);
             setBalance(balance);
+
         }
 
         public double getoverdraftLimit(){
@@ -138,6 +141,11 @@ public class Accounts {
             return "Checking";
         }
 
+
+
+        public double getMonthlyFee(){
+            return this.monthlyFee;
+        }
         public void applyMonthlyFee(){
             this.setBalance(-10);
         }
@@ -151,6 +159,17 @@ public class Accounts {
             }else{
                 this.setBalance(-amount);
             }
+        }
+
+        @Override
+        public String toString(){
+            return String.format("Account Number: %s\n" +
+                    "Customer: %s\n" +
+                    "Account Type: %s\n" +
+                    "Initial Balance: %f\n" +
+                    "Overdraft Limit: %s\n" +
+                    "Monthly Fee: %s\n" +
+                    "Status: %s",this.getAccountNUmber(),this.getCustomer(),this.getAccountType(),this.getBalance(),this.getoverdraftLimit(),(this.monthlyFee +" (WAIVED - Premium Customer)"),this.getStatus());
         }
     }
 }
