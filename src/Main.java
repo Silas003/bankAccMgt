@@ -84,11 +84,11 @@ public class Main {
             System.out.print("Enter customer address: ");
             customerAddress = scanner.nextLine();
 
-            System.out.print("Customer type:");
+            System.out.println("Customer type:");
             for( String type : customerType){
                 System.out.println(type);
             }
-            System.out.print("Select type(1-2: ");
+            System.out.print("Select type(1-2): ");
             String customerTypeInput = scanner.nextLine();
 
             switch (customerTypeInput){
@@ -104,13 +104,13 @@ public class Main {
                 default:
                     System.out.println("Please select a number between of choices of [1-2]");
             }
-            System.out.print("Account type:");
+            System.out.println("Account type:");
             for( String type : accountType){
                 System.out.println(type);
             }
 
 
-            System.out.print("Select type(1-2: ");
+            System.out.print("Select type(1-2): ");
             String accounTypeInput = scanner.nextLine();
 
 
@@ -123,8 +123,12 @@ public class Main {
                 case "1":
                     if(customerTypeInput.equals("1")){
                         newSavingsAccount = accounts.new SavingsAccount("ACC001",newRegularCustomer,initialDepositAmount);
+                        System.out.println("Account created succesfully!");
+                        System.out.println(newSavingsAccount);
                     }else{
                          newSavingsAccount = accounts.new SavingsAccount("ACC001",newPremiumCustomer,initialDepositAmount);
+                        System.out.println("Account created succesfully!");
+                        System.out.println(newSavingsAccount);
                     }
 
                     break;
@@ -132,8 +136,12 @@ public class Main {
                 case "2":
                     if(customerTypeInput.equals("2")){
                          newCheckingAccount = accounts.new CheckingAccount("ACC001",newRegularCustomer,initialDepositAmount);
+                        System.out.println("Account created succesfully!");
+                        System.out.println(newCheckingAccount);
                     }else{
                          newCheckingAccount = accounts.new CheckingAccount("ACC001",newPremiumCustomer,initialDepositAmount);
+                        System.out.println("Account created succesfully!");
+                        System.out.println(newCheckingAccount);
                     }
 
                     break;

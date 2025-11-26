@@ -23,8 +23,8 @@ public class Accounts {
         public void setAccountNumber(String AccountNumber){
             this.accountNumber = AccountNumber;
         }
-        public Customers.Customer getCustomer(){
-            return this.customer;
+        public String getCustomer(){
+            return this.customer.toString();
         }
 
         public void setCustomer(Customers.Customer Customer){
@@ -34,7 +34,9 @@ public class Accounts {
         public double getBalance(){
             return this.balance;
         }
-        public void setBalance(double balance){}
+        public void setBalance(double balance){
+            this.balance = balance;
+        }
 
         public String getStatus(){
             return this.status;
@@ -71,6 +73,7 @@ public class Accounts {
             setAccountNumber(accountNumber);
             setCustomer(customer);
             setBalance(balance);
+            setStatus("active");
         }
         @Override
         Account displayAccountDetails(){
@@ -92,6 +95,17 @@ public class Accounts {
             double balance = getBalance();
 
             return balance * this.interestRate;
+        }
+
+        @Override
+        public String toString(){
+            return String.format("Account Number: %s\n" +
+                    "Customer: %s\n" +
+                    "Account Type: %s\n" +
+                    "Initial Balance: %f\n" +
+                    "Interest Rate: %s\n" +
+                    "Minimum Balance: %s\n" +
+                    "Status: %s",this.getAccountNUmber(),this.getCustomer(),this.getAccountType(),this.getBalance(),(this.interestRate*100 +"%"),this.minimumBalance,this.getStatus());
         }
     }
 
