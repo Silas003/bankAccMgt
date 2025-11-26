@@ -1,0 +1,110 @@
+public class Customers {
+
+    public abstract class Customer{
+        private String customerId;
+        private String name;
+        private int age;
+        private String contact;
+        private String address;
+
+        static int customerCounter;
+
+        Customer(){
+            customerCounter++;
+        }
+
+        Customer(String name,int age, String contact, String address){
+            customerCounter++;
+            setName(name);
+            setAge(age);
+            setContact(contact);
+            setAddress(address);
+        }
+
+        public String getCustomerId() {
+            return this.customerId;
+        }
+
+        public void setCustomerId(String customerId) {
+            this.customerId = customerId;
+        }
+        public String getName() {
+            return this.name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+        public int getAge() {
+            return this.age;
+        }
+        public void setAge(int age) {
+            this.age = age;
+        }
+        public String getContact() {
+            return this.contact;
+        }
+        public void setContact(String contact) {
+            this.contact = contact;
+        }
+        public String getAddress() {
+            return this.address;
+        }
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        abstract Customer displayCustomerDetails();
+        abstract String getCustomerType();
+    }
+    enum CustomerType{
+        regular,
+        premium
+    }
+
+    public  class RegularCustomer extends Customer{
+
+        RegularCustomer(String name,int age, String contact, String address){
+            super(name,age,contact,address);
+        }
+        @Override
+        Customer displayCustomerDetails(){
+            return this;
+        }
+
+        @Override
+        String getCustomerType(){
+            return "regular";
+        }
+    }
+
+    public  class PremiumCustomer extends Customer{
+
+        private double minimumBalance = 10000;
+
+        PremiumCustomer(String name,int age, String contact, String address){
+            super(name,age,contact,address);
+        }
+
+        public double getMinimumBalance(){
+            return this.minimumBalance;
+        }
+
+        public void setMinimumBalance(double minimumBalance){
+            this.minimumBalance = minimumBalance;
+        }
+        @Override
+        Customer displayCustomerDetails(){
+            return this;
+        }
+
+        @Override
+        String getCustomerType(){
+            return "Premium";
+        }
+
+        public boolean hasWaivedFees(){
+            return true;
+        }
+    }
+}
+
