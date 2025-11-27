@@ -4,31 +4,39 @@ import java.util.Arrays;
 public class AccountManagement {
 
 //    public class AccountManager{
-        private static ArrayList<Accounts.Account> accounts = new ArrayList<>(50);
-        private static int accountCount;
+        private static Accounts.Account[] accounts = new Accounts.Account[50];
+        public static int accountCount;
 
         public static void addAccount(Accounts.Account account){
-            accounts.add(account);
+
+            if (accountCount < accounts.length) {
+                accounts[accountCount++] = account;
+            } else {
+                System.out.println("Account list is full!");
+            }
+
         }
 
         public static Accounts.Account findAccount(String accountNumber){
 
             for(Accounts.Account account: accounts){
-                if(account.getAccountNUmber().equals(accountNumber)){
+                if(account.getAccountNumber().equals(accountNumber)){
                     return account;
                 }
             }
             return null;
         }
 
-        public static ArrayList<Accounts.Account> viewAllAccounts(){
+        public static Accounts.Account[] viewAllAccounts(){
             return accounts;
         }
 
         public double getTotalBalance(){
             double totalBalance = 0;
-
-            for ( Accounts.Account account : accounts){
+            Accounts.Account account ;
+            System.out.println(accountCount);
+            for ( int i = 0 ; i < accountCount; i++){
+                account = accounts[i];
                 totalBalance += account.getBalance();
             }
 
@@ -36,7 +44,7 @@ public class AccountManagement {
         }
 
         public static int getAccountCount(){
-            return accounts.size();
+            return accountCount;
         }
 //    }
 }
