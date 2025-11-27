@@ -61,10 +61,6 @@ public class Customers {
         abstract Customer displayCustomerDetails();
         abstract String getCustomerType();
     }
-    enum CustomerType{
-        regular,
-        premium
-    }
 
     public  class RegularCustomer extends Customer{
 

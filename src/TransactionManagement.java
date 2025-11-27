@@ -4,16 +4,19 @@ public class TransactionManagement {
 //}
 
 //class TransactionManager{
-    private ArrayList<Transactions.Transaction> transactions = new ArrayList<Transactions.Transaction>(200);
+    private Transactions.Transaction transactions[] = new Transactions.Transaction[200];
     private int transactionCount;
 
     public void addTransaction(Transactions.Transaction transaction){
-        transactions.add(transaction);
+        transactions[transactionCount]=transaction;
+        transactionCount++;
     }
 
     public ArrayList<Transactions.Transaction> viewTransactionByAccount(String accountNumber) {
         ArrayList<Transactions.Transaction> accountTransactions = new ArrayList<>();
-        for (Transactions.Transaction trnx : transactions){
+        Transactions.Transaction trnx;
+        for (int i = 0 ; i < transactionCount ; i++){
+            trnx = transactions[i];
             if (trnx.getAccountNumber().equals(accountNumber)){
                accountTransactions.add(trnx);
             }
@@ -28,6 +31,6 @@ public class TransactionManagement {
     }
 
     public int getTransactionCount(){
-        return this.transactions.size();
+        return this.transactionCount;
     }
 }

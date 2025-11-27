@@ -3,8 +3,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.DoubleAdder;
 
 public class Main {
 
@@ -119,12 +117,12 @@ public class Main {
             switch (accounTypeInput){
                 case "1":
                     if(customerTypeInput.equals("1")){
-                        newSavingsAccount = accounts.new SavingsAccount("ACC001",newRegularCustomer,initialDepositAmount);
+                        newSavingsAccount = accounts.new SavingsAccount(newRegularCustomer,initialDepositAmount);
                         accManagement.addAccount(newSavingsAccount);
                         System.out.println("Account created succesfully!");
                         System.out.println(newSavingsAccount);
                     }else{
-                         newSavingsAccount = accounts.new SavingsAccount("ACC001",newPremiumCustomer,initialDepositAmount);
+                         newSavingsAccount = accounts.new SavingsAccount(newPremiumCustomer,initialDepositAmount);
                         accManagement.addAccount(newSavingsAccount);
                         System.out.println("Account created succesfully!");
                         System.out.println(newSavingsAccount);
@@ -134,12 +132,12 @@ public class Main {
 
                 case "2":
                     if(customerTypeInput.equals("2")){
-                         newCheckingAccount = accounts.new CheckingAccount("ACC001",newRegularCustomer,initialDepositAmount);
+                         newCheckingAccount = accounts.new CheckingAccount(newRegularCustomer,initialDepositAmount);
                         accManagement.addAccount(newCheckingAccount);
                         System.out.println("Account created succesfully!");
                         System.out.println(newCheckingAccount);
                     }else{
-                         newCheckingAccount = accounts.new CheckingAccount("ACC001",newPremiumCustomer,initialDepositAmount);
+                         newCheckingAccount = accounts.new CheckingAccount(newPremiumCustomer,initialDepositAmount);
                         accManagement.addAccount(newCheckingAccount);
                         System.out.println("Account created succesfully!");
                         System.out.println(newCheckingAccount);
@@ -233,17 +231,17 @@ public class Main {
         System.out.println("Enter Account Number: ");
         String accountNumber = scanner.nextLine();
 
-        Accounts.Account account = accManagement.findAccount("ACC001");
-        System.out.printf("Account: ACC001 - %s\nAccount Type: %s\nCurrent Balance: %f\n\n",account.getCustomer(),account.getAccountType(),account.getBalance());
+        Accounts.Account account = accManagement.findAccount(accountNumber.toUpperCase());
+        System.out.printf("Account: %s - %s\nAccount Type: %s\nCurrent Balance: %.2f\n\n",account.getAccountNumber(),account.getCustomer(),account.getAccountType(),account.getBalance());
         System.out.println("TRANSACTION HISTORY");
         System.out.println("=====================================================================");
-        System.out.println("TXN ID | DATE/TIME          | TYPE    | AMOUNT     | BALANCE");
+        System.out.println("TXN ID | DATE/TIME          | TYPE    | AMOUNT    | BALANCE");
 
         double totalDeposits = 0;
         double totalWithdrawals =  0;
 
         if(true){
-            ArrayList<Transactions.Transaction> tnx = trnxManagement.viewTransactionByAccount("ACC001");
+            ArrayList<Transactions.Transaction> tnx = trnxManagement.viewTransactionByAccount(accountNumber.toUpperCase());
 
             for ( Transactions.Transaction tn : tnx){
                 if(tn.getType().equals("Deposit")){
@@ -251,7 +249,7 @@ public class Main {
                 }else if(tn.getType().equals("Withdrawal")){totalWithdrawals += tn.getAmount();
                 }
 
-                System.out.printf("%s |%s |%s  |%s$%f  |$%f\n",tn.getTransactionId(),tn.getTimeStamp(),tn.getType(),tn.getType().equals("Deposit") ? "+" : "-",tn.getAmount(),tn.getBalanceAfter());
+                System.out.printf("%s |%s |%s  |%s$%.2f  |$%.2f\n",tn.getTransactionId(),tn.getTimeStamp(),tn.getType(),tn.getType().equals("Deposit") ? "+" : "-",tn.getAmount(),tn.getBalanceAfter());
             }
         System.out.println("=====================================================================\n");
         System.out.println("Total Transactions: "+tnx.size());
@@ -269,11 +267,22 @@ public class Main {
         System.out.println("ACC NO | CUSTOMER NAME | TYPE | BALANCE | STATUS");
         System.out.println("====================================================");
 
-        for(var account :accManagement.viewAllAccounts()){
-        System.out.printf("%s %s %s $%f %s %s\n",account.getAccountNUmber(),account.getCustomer(),account.getAccountType(),account.getBalance(),account.getStatus(),account.getAccountSpecificDetails());
+
+        Accounts.Account[] allAccounts = accManagement.viewAllAccounts();
+        for (int i = 0; i < accManagement.accountCount; i++) {
+            Accounts.Account account = allAccounts[i];
+            System.out.printf("%s | %s |  %s |  $%.2f | %s |  %s\n",
+                    account.getAccountNumber(),
+                    account.getCustomer(),
+                    account.getAccountType(),
+                    account.getBalance(),
+                    account.getStatus(),
+                    account.getAccountSpecificDetails()
+            );
         }
 
-        System.out.printf("Total Accounts: %d\nTotal Bank Balance: $%f\n",accManagement.getAccountCount(),accManagement.getTotalBalance());
+
+        System.out.printf("Total Accounts: %d\nTotal Bank Balance: $%.2f\n",accManagement.getAccountCount(),accManagement.getTotalBalance());
     }
 
 
