@@ -15,8 +15,10 @@ public class Accounts {
 
         abstract Account displayAccountDetails();
         abstract String getAccountType();
-
-
+        abstract String getAccountSpecificDetails();
+        private void generateAccountNumber(){
+            this.accountNumber = "ACC00" + accountCounter;
+        }
         public String getAccountNUmber(){
             return this.accountNumber;
         }
@@ -55,6 +57,11 @@ public class Accounts {
 
         public void withdraw(double amount){
             this.balance -= amount;
+        }
+
+        @Override
+        public String toString(){
+            return String.format("Customer: %s\nAccount Type:%s\nCurrent Balance: %f",getCustomer(),getAccountType(),getBalance());
         }
 
     }
@@ -98,7 +105,16 @@ public class Accounts {
 
             return balance * this.interestRate;
         }
-
+        private String getInterestRate(){
+            return String.format("%f%%",interestRate*100);
+        }
+        private double getMinimumBalance(){
+            return minimumBalance;
+        }
+        @Override
+        public String getAccountSpecificDetails(){
+            return String.format("Interest Rate: %s Min Balance:$ %f",getInterestRate(),getMinimumBalance());
+        }
         @Override
         public String toString(){
             return String.format("Account Number: %s\n" +
@@ -128,6 +144,10 @@ public class Accounts {
 
         }
 
+        @Override
+        public String getAccountSpecificDetails(){
+            return String.format("Overdraft Limit: $%f MonthlyFee: $%f",getoverdraftLimit(),getMonthlyFee());
+        }
         public double getoverdraftLimit(){
             return this.overdraftLimit;
         }

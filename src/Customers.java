@@ -15,7 +15,7 @@ public class Customers {
 
         @Override
         public String toString(){
-            return String.format("%s (%s)",this.getName(),this.getCustomerType());
+            return String.format("%s ",this.getName());
         }
 
         Customer(String name,int age, String contact, String address){
