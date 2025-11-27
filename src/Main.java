@@ -1,12 +1,21 @@
-import java.util.Arrays;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.DoubleAdder;
+
 public class Main {
 
-
+    static AccountManagement accManagement = new AccountManagement();
+    static  TransactionManagement trnxManagement = new TransactionManagement();
+    static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args){
         mainMenu();
         viewAccounts();
+        processTransaction();
+        viewTransactionHistory();
     }
 
     private static void mainMenu(){
@@ -49,22 +58,8 @@ public class Main {
     }
 
     private static void createAccount(){
-        AccountManagement accManagement = new AccountManagement();
-        Scanner scanner = new Scanner(System.in);
+
         String customerName,customerAddress,customerContact;
-        String[] customerType = new String[]{
-                "1. Regular Customer (Standard banking services)",
-                "2. Premium Customer (Enhanced benefits, min balance $10,000)"
-        };
-
-        String[] accountType = new String[]{
-                "1. Savings Account (Interest: 3.5%, Min Balance: $500)",
-                "2. Checking Account (Overdraft: $1,000 , Monthly Fee: $10)"
-        };
-
-        HashMap<String,String> customerTypeMap = new HashMap<>();
-        customerTypeMap.put("1","");
-        customerTypeMap.put("2","");
         int customerAge;
         Customers customers = new Customers();
         Accounts accounts = new Accounts();
@@ -87,9 +82,9 @@ public class Main {
             customerAddress = scanner.nextLine();
 
             System.out.println("Customer type:");
-            for( String type : customerType){
-                System.out.println(type);
-            }
+
+            System.out.println("1. Regular Customer (Standard banking services)\n2. Premium Customer (Enhanced benefits, min balance $10,000)");
+
             System.out.print("Select type(1-2): ");
             String customerTypeInput = scanner.nextLine();
 
@@ -107,9 +102,9 @@ public class Main {
                     System.out.println("Please select a number between of choices of [1-2]");
             }
             System.out.println("Account type:");
-            for( String type : accountType){
-                System.out.println(type);
-            }
+
+            System.out.println("1. Savings Account (Interest: 3.5%, Min Balance: $500)\n2. Checking Account (Overdraft: $1,000 , Monthly Fee: $10)");
+
 
 
             System.out.print("Select type(1-2): ");
@@ -154,7 +149,7 @@ public class Main {
                 default:
                     System.out.println("Please select a number between of choices of [1-2]");
             }
-            scanner.close();
+//            scanner.close();
         }catch(NumberFormatException e){
             System.out.println("Input value must be of type integer");
             System.exit(0);
@@ -162,15 +157,124 @@ public class Main {
 
     }
 
-    public static  void viewAccounts(){
-        AccountManagement accManagement = new AccountManagement();
-        System.out.println("ACCOUNT LISTING");
-        System.out.println("==============================================================================");
-        System.out.println("ACC NO | CUSTOMER NAME | TYPE | BALANCE | STATUS | INTEREST RATE | MIN BALANCE");
-        System.out.println("==============================================================================");
+    public static void processTransaction(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        HashMap<String,String> trnType =  new HashMap<>();
+        trnType.put("1","Deposit");
+        trnType.put("2","Withdrawal");
+        System.out.println("PROCESS TRANSACTION");
+        System.out.println("===================");
 
-        for(Accounts.Account account :accManagement.viewAllAccounts()){
-        System.out.printf("%s","%s","%s","%f","%s",account.getAccountNUmber(),account.getCustomer(),account.getAccountType(),account.getBalance(),account.getStatus());
+//        String accountNumber = scanner.nextLine();
+        Transactions transactions = new Transactions()  ;
+
+        Accounts.Account userAccount = accManagement.findAccount("ACC001");
+//        System.out.println(userAccount);
+        System.out.println("Transaction type");
+        System.out.println("1. Deposit\n2. Withdrawal");
+        System.out.print("Select type(1-2): ");
+        String transactionType = scanner.nextLine();
+        System.out.print("Enter amount: ");
+        double amount = Double.parseDouble(scanner.nextLine());
+        double balanceAfter = transactionType.equals("1") ? userAccount.getBalance() + amount : userAccount.getBalance() - amount;
+        var transactionDateTime = LocalDateTime.now().format(formatter);
+        System.out.println("TRANSACTION CONFIRMATION");
+        System.out.println("========================");
+        System.out.println("Transaction ID: TNX002");
+        System.out.println("Account: ACC001");
+        System.out.printf("Type: %s\n",trnType.get(transactionType));
+        System.out.printf("Amount: $%s\n",amount);
+        System.out.printf("Previous Balance: $%s\n",userAccount.getBalance());
+        System.out.printf("New Balance: $%s\n",balanceAfter);
+        System.out.printf("Date/Time: %s\n", transactionDateTime );
+
+        System.out.print("Confirm transaction? (Y/N): ");
+        String confirmation = scanner.nextLine();
+        Transactions.Transaction trnx;
+        switch (confirmation.toUpperCase()) {
+            case "Y":
+                switch(transactionType){
+                    case "1":
+                        userAccount.deposit(amount);
+                         trnx =  transactions.new Transaction("ACC001","Deposit",amount,
+                                balanceAfter,transactionDateTime);
+                         trnxManagement.addTransaction(trnx);
+                        System.out.println("Transactions created sucessfully!");
+                        System.out.println(trnx);
+                        break;
+
+                    case "2":
+                        userAccount.withdraw(amount);
+                         trnx =  transactions.new Transaction("ACC001","Withdrawal",amount,
+                                balanceAfter,transactionDateTime);
+                        trnxManagement.addTransaction(trnx);
+                        break;
+
+                    default:
+                        System.out.println("Please select a number between of choices of [1-2]");
+                        break;
+                }
+            case "N":
+                break;
+
+            default:
+                System.out.println("Please select a number between of choices of [Y/N]");
         }
+
+
+
+
     }
+
+    public static void viewTransactionHistory(){
+
+        System.out.println("VIEW TRANSACTION HISTORY");
+        System.out.println("========================");
+        System.out.println("Enter Account Number: ");
+        String accountNumber = scanner.nextLine();
+
+        Accounts.Account account = accManagement.findAccount("ACC001");
+        System.out.printf("Account: ACC001 - %s\nAccount Type: %s\nCurrent Balance: %f\n\n",account.getCustomer(),account.getAccountType(),account.getBalance());
+        System.out.println("TRANSACTION HISTORY");
+        System.out.println("=====================================================================");
+        System.out.println("TXN ID | DATE/TIME          | TYPE    | AMOUNT     | BALANCE");
+
+        double totalDeposits = 0;
+        double totalWithdrawals =  0;
+
+        if(true){
+            ArrayList<Transactions.Transaction> tnx = trnxManagement.viewTransactionByAccount("ACC001");
+
+            for ( Transactions.Transaction tn : tnx){
+                if(tn.getType().equals("Deposit")){
+                    totalDeposits += tn.getAmount();
+                }else if(tn.getType().equals("Withdrawal")){totalWithdrawals += tn.getAmount();
+                }
+
+                System.out.printf("%s |%s |%s  |%s$%f  |$%f\n",tn.getTransactionId(),tn.getTimeStamp(),tn.getType(),tn.getType().equals("Deposit") ? "+" : "-",tn.getAmount(),tn.getBalanceAfter());
+            }
+        System.out.println("=====================================================================\n");
+        System.out.println("Total Transactions: "+tnx.size());
+        System.out.println("Total Deposits: "+totalDeposits);
+        System.out.println("Total Withdrawals: "+totalWithdrawals);
+        System.out.println("Net Change: "+(totalDeposits - totalWithdrawals));
+        }else{
+        System.out.println("Account not found");
+    }
+    }
+    public static  void viewAccounts(){
+
+        System.out.println("ACCOUNT LISTING");
+        System.out.println("====================================================");
+        System.out.println("ACC NO | CUSTOMER NAME | TYPE | BALANCE | STATUS");
+        System.out.println("====================================================");
+
+        for(var account :accManagement.viewAllAccounts()){
+        System.out.printf("%s %s %s $%f %s %s\n",account.getAccountNUmber(),account.getCustomer(),account.getAccountType(),account.getBalance(),account.getStatus(),account.getAccountSpecificDetails());
+        }
+
+        System.out.printf("Total Accounts: %d\nTotal Bank Balance: $%f\n",accManagement.getAccountCount(),accManagement.getTotalBalance());
+    }
+
+
 }
