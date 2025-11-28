@@ -64,9 +64,8 @@ public class Transactions {
             this.type = type;
         }
         Transaction(){
-//            this.timeStamp = String.format("%s",LocalDateTime.now());
-            transactionCounter++;
             generateUniqueId();
+            transactionCounter++;
         }
         private void setTimeStamp(String dateTime){
             this.timeStamp = dateTime;
