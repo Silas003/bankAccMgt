@@ -9,8 +9,8 @@ public class Accounts {
 
         public static int accountCounter;
         Account(){
-            accountCounter++;
             setAccountNumber();
+            accountCounter++;
         }
         abstract Account displayAccountDetails();
         abstract String getAccountType();
