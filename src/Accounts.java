@@ -70,7 +70,7 @@ public class Accounts {
 
     class SavingsAccount extends Account{
         private double interestRate;
-        private double minimumBalance;
+        private  double minimumBalance;
 
         SavingsAccount(){
             super();
@@ -81,7 +81,6 @@ public class Accounts {
 
         SavingsAccount(Customers.Customer customer,double balance){
             this();
-//            setAccountNumber(accountNumber);
             setCustomer(customer);
             setBalance(balance);
             setStatus("active");
