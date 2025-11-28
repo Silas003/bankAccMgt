@@ -10,16 +10,13 @@ public class Main {
     static  TransactionManagement trnxManagement = new TransactionManagement();
     static Scanner scanner = new Scanner(System.in);
     static int userCurrentSession = 1;
-    static int maxRetries = 0;
+    static final int maxRetries = 3;
+
     public static void main(String[] args){
-//        mainMenu();
-//        viewAccounts();
-//        processTransaction();
-//        viewTransactionHistory();
         System.out.println("||====================================||");
         System.out.println("  BANK ACCOUNT MANAGEMENT - MAIN MENU");
         System.out.println("||====================================||");
-        while (userCurrentSession != 0){
+        while (userCurrentSession != 0 ){
             switch (userCurrentSession){
                 case 1:
                     mainMenu();
@@ -40,11 +37,6 @@ public class Main {
     }
 
     private static void mainMenu(){
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.println("||====================================||");
-//        System.out.println("BANK ACCOUNT MANAGEMENT - MAIN MENU");
-//        System.out.println("||====================================||");
-
         String[] menuItems = new String[]{
                 "1. Create Account \n",
                 "2. View Accounts \n",
@@ -78,39 +70,16 @@ public class Main {
                 default:
                     System.out.println("Please select a number between of choices of [1-5]");
                     userCurrentSession = 0;
-//                System.exit(0);
             }
 
 
-//        switch(userInput){
-//            case "1":
-//                createAccount();
-//                break;
-//            case "2":
-//                viewAccounts();
-//                break;
-//            case "3":
-//                processTransaction();
-//                break;
-//            case "4":
-//                viewTransactionHistory();
-//                break;
-//            case "5":
-//                System.out.println("Thank you for using Bank Account Management System! \nGoodbye!");
-//                System.exit(0);
-//                break;
-//            default:
-//                System.out.println("Please select a number between of choices of [1-5]");
-//                userCurrentSession = 0;
-////                System.exit(0);
-//        }
-//        userCurrentSession = 1;
     }
 
     private static void createAccount(){
-
-        String customerName,customerAddress,customerContact;
-        int customerAge;
+        int userCreateAccountSession = 1;
+        int maxRetries = 0;
+        String customerName = "",customerAddress = "",customerContact = "";
+        int customerAge = 0;
         Customers customers = new Customers();
         Accounts accounts = new Accounts();
         Customers.Customer newRegularCustomer = null;
@@ -118,33 +87,110 @@ public class Main {
         Accounts.Account newSavingsAccount;
         Accounts.Account newCheckingAccount;
 
+
         System.out.println("ACCOUNT CREATION");
         System.out.println("====================================");
 
-        try{
-            System.out.print("Enter customer name: ");
-            customerName = scanner.nextLine();
-//            validation for customer name
-            if(customerName.isBlank() || !customerName.matches("^[A-Za-z]+$")) System.out.println(
-                "Invalid Customer Name provided. NB: Name must not be empty or contain an integer");
-//            System.out.println();
-            System.out.print("Enter customer age: ");
-            customerAge = Integer.parseInt(scanner.nextLine());
-            System.out.print("Enter customer contact: ");
-            customerContact = scanner.nextLine();
-            if(customerContact.isBlank() || !customerContact.matches("^[0-9]+$")) System.out.println(
-                    "Invalid Customer Contact provided. NB: Contact must not be empty or contain an alphabet or be of negative value");
-            System.out.print("Enter customer address: ");
-            customerAddress = scanner.nextLine();
-            if(customerAddress.isBlank()) System.out.println(
-                    "Invalid Customer Address provided. NB: Address must not be empty");
-            System.out.println("Customer type:");
+//        try{
+//            System.out.print("Enter customer name: ");
+//            customerName = scanner.nextLine();
+////            validation for customer name
+//            if(customerName.isBlank() || !customerName.matches("^[A-Za-z]+$")) System.out.println(
+//                "Invalid Customer Name provided. NB: Name must not be empty or contain an integer");
+//
+//            System.out.print("Enter customer age: ");
+//            customerAge = Integer.parseInt(scanner.nextLine());
+//            System.out.print("Enter customer contact: ");
+//            customerContact = scanner.nextLine();
+//            if(customerContact.isBlank() || !customerContact.matches("^[0-9]+$")) System.out.println(
+//                    "Invalid Customer Contact provided. NB: Contact must not be empty or contain an alphabet or be of negative value");
+//            System.out.print("Enter customer address: ");
+//            customerAddress = scanner.nextLine();
+//            if(customerAddress.isBlank()) System.out.println(
+//                    "Invalid Customer Address provided. NB: Address must not be empty");
+//            System.out.println("Customer type:");
+//
+//            System.out.println("1. Regular Customer (Standard banking services)\n2. Premium Customer (Enhanced benefits, min balance $10,000)");
+//
+//            System.out.print("Select type(1-2): ");
+//            String customerTypeInput = scanner.nextLine();
 
-            System.out.println("1. Regular Customer (Standard banking services)\n2. Premium Customer (Enhanced benefits, min balance $10,000)");
+//            while(maxRetries <3){
+//                switch (userCreateAccountSession){
+//                    case 1:
+//                        System.out.print("Enter customer name: ");
+//                        customerName = scanner.nextLine();
+////            validation for customer name
+//                        if(customerName.isBlank() || !customerName.matches("^[A-Za-z]+$")) {
+//                            System.out.println("Invalid Customer Name provided. NB: Name must not be empty or contain an integer");
+//                            maxRetries++;
+//                            userCreateAccountSession = 1;
+////
+//                        }else{
+//                            userCreateAccountSession = 2;
+//
+//                        }
+//                        break;
+//                    case 2:
+//                        System.out.print("Enter customer contact: ");
+//                        customerContact = scanner.nextLine();
+//                        if(customerContact.isBlank() || !customerContact.matches("^[0-9]+$")) {
+//                            System.out.println(
+//                                    "Invalid Customer Contact provided. NB: Contact must not be empty or contain an alphabet or be of negative value");
+//                            maxRetries++;
+//                            userCreateAccountSession = 2;
+////
+//                        }else{
+//                            userCreateAccountSession = 3;
+//
+//                        }
+//                        break;
+//
+//                    case 3:
+//                        System.out.print("Enter customer address: ");
+//                        customerAddress = scanner.nextLine();
+//                        if(customerAddress.isBlank()) {
+//                            System.out.println(
+//                                    "Invalid Customer Address provided. NB: Address must not be empty");
+//                            maxRetries++;
+//                            userCreateAccountSession = 3;
+////
+//                        }else{
+//                            userCreateAccountSession = 4;
+//
+//                        }
+//                        break;
+//
+//                    case 4:
+//                        System.out.print("Enter customer address: ");
+//                        customerAddress = scanner.nextLine();
+//                        if(customerAddress.isBlank()) {
+//                            System.out.println("Invalid Customer Address provided. NB: Address must not be empty");
+//                            maxRetries++;
+//                            userCreateAccountSession = 4;
+//                        }
+//                        break;
+//                    default:
+//                        userCurrentSession = 1;
+//                            }
+//            }
+//                    System.out.println("1. Regular Customer (Standard banking services)\n2. Premium Customer (Enhanced benefits, min balance $10,000)");
 
-            System.out.print("Select type(1-2): ");
-            String customerTypeInput = scanner.nextLine();
-
+//            System.out.print("Select type(1-2): ");
+//            String customerTypeInput = scanner.nextLine();
+//
+        customerName = validateCustomerNameInput(scanner);
+        if(customerName == null) return;
+        customerAge = validateCustomerAgeInput(scanner);
+        if(customerAge == -1) return;
+        customerContact = validateCustomerContactInput(scanner);
+        if(customerContact == null) return;
+        customerAddress = validateCustomerAddressInput(scanner);
+        if(customerAddress == null) return;
+        String customerTypeInput = validateCustomerTypeInput(scanner);
+        if(customerTypeInput == null) return;
+        String  accounTypeInput = validateAccountTypeInput(scanner);
+        if(accounTypeInput == null) return;
             switch (customerTypeInput){
                 case "1":
                     newRegularCustomer = customers.new RegularCustomer(customerName,customerAge, customerContact, customerAddress);
@@ -155,28 +201,25 @@ public class Main {
                     newPremiumCustomer = customers.new PremiumCustomer(customerName,customerAge,customerContact,customerAddress);
 
                     break;
-                default:
-                    System.out.println("Please select a number between of choices of [1-2]");
+
+
             }
-            System.out.println("Account type:");
 
-            System.out.println("1. Savings Account (Interest: 3.5%, Min Balance: $500)\n2. Checking Account (Overdraft: $1,000 , Monthly Fee: $10)");
-
-
-
-            System.out.print("Select type(1-2): ");
-            String accounTypeInput = scanner.nextLine();
-
-
-            System.out.print("Enter initial deposit amount: ");
-            double initialDepositAmount = Double.parseDouble(scanner.nextLine());
-            if (initialDepositAmount < 0) {
-                throw new NumberFormatException();
-            }else if (initialDepositAmount <10000 && customerTypeInput.equals("2")) {
-                System.out.println("A premium customer cannot have an initial deposit less than $10,000");
-            }else if (initialDepositAmount < 500 && accounTypeInput.equals("1")){
-                System.out.println("A savings account cannot have an initial deposit less than $500");
-            }
+        double initialDepositAmount = validateInitialDepositInput(scanner,customerTypeInput,accounTypeInput);
+//            System.out.println("Account type:");
+//
+//            System.out.println("1. Savings Account (Interest: 3.5%, Min Balance: $500)\n2. Checking Account (Overdraft: $1,000 , Monthly Fee: $10)");
+//            System.out.print("Select type(1-2): ");
+//            String accounTypeInput = scanner.nextLine();
+//            System.out.print("Enter initial deposit amount: ");
+//            double initialDepositAmount = Double.parseDouble(scanner.nextLine());
+//            if (initialDepositAmount < 0) {
+//                throw new NumberFormatException();
+//            }else if (initialDepositAmount <10000 && customerTypeInput.equals("2")) {
+//                System.out.println("A premium customer cannot have an initial deposit less than $10,000");
+//            }else if (initialDepositAmount < 500 && accounTypeInput.equals("1")){
+//                System.out.println("A savings account cannot have an initial deposit less than $500");
+//            }
 
 //            creating account based on accountType selected from the user;
             switch (accounTypeInput){
@@ -212,11 +255,7 @@ public class Main {
                 default:
                     System.out.println("Please select a number between of choices of [1-2]");
             }
-//            scanner.close();
-        }catch(NumberFormatException e){
-            System.out.println("Input value must be of positive type");
-            System.exit(0);
-        }
+
         System.out.print("Press Enter to continue....");
         scanner.nextLine();
         userCurrentSession = 1;
@@ -242,17 +281,12 @@ public class Main {
 
         Accounts.Account userAccount = accManagement.findAccount(accountNumber.toUpperCase());
 
-        System.out.println("Transaction type");
-        System.out.println("1. Deposit\n2. Withdrawal");
-        System.out.print("Select type(1-2): ");
-        String transactionType = scanner.nextLine();
-        if(!transactionType.equals("1") || !transactionType.equals("2"))
-            System.out.println("Please select a number between of choices of [1-2] for correct transaction type.");
+
+        String transactionType = validateTransactionTypeInput(scanner);
+        if(transactionType == null) return;
         System.out.print("Enter amount: ");
-        double amount = Double.parseDouble(scanner.nextLine());
-        if (amount < 0) {
-            throw new NumberFormatException();
-        }
+        double amount = validateTransactionAmount(scanner);
+        if (amount == -1 )return;
         double balanceAfter = transactionType.equals("1") ? userAccount.getBalance() + amount : userAccount.getBalance() - amount;
         var transactionDateTime = LocalDateTime.now().format(formatter);
         System.out.println("TRANSACTION CONFIRMATION");
@@ -265,8 +299,8 @@ public class Main {
         System.out.printf("New Balance: $%s\n",balanceAfter);
         System.out.printf("Date/Time: %s\n", transactionDateTime );
 
-        System.out.print("Confirm transaction? (Y/N): ");
-        String confirmation = scanner.nextLine();
+        String confirmation = validateTransactionConfirmation(scanner);
+        if(confirmation == null) return;
         Transactions.Transaction trnx;
         switch (confirmation.toUpperCase()) {
             case "Y":
@@ -288,7 +322,6 @@ public class Main {
                         break;
 
                     default:
-                        System.out.println("Please select a number between of choices of [1-2]");
                         break;
                 }
             case "N":
@@ -380,6 +413,152 @@ public class Main {
         System.out.print("Press Enter to continue....");
         scanner.nextLine();
         userCurrentSession = 1;
+    }
+
+    public static String validateCustomerNameInput(Scanner scanner){
+        String customerName ;
+
+        for(int i=0 ; i < maxRetries ; i++ ) {
+            System.out.print("Enter customer name: ");
+            customerName = scanner.nextLine();
+            if (customerName.isBlank() || !customerName.matches("^[A-Za-z]+$")) {
+                System.out.println("Invalid Customer Name provided. NB: Name must not be empty or contain an integer");
+            }else return customerName;
+
+        }
+
+        System.out.println("Too many invalid attempts. Returning to main menu.");
+        return null;
+
+    }
+
+    public static int validateCustomerAgeInput(Scanner scanner){
+        int customerAge ;
+        for (int i = 0; i < maxRetries; i++) {
+            System.out.print("Enter customer age: ");
+            try {
+                customerAge = Integer.parseInt(scanner.nextLine());
+                if (customerAge > 0) return customerAge;
+                System.out.println("Age must be positive.");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid age. Must be a number.");
+            }
+        }
+        System.out.println("Too many invalid attempts. Returning to main menu.");
+        return -1;
+
+    }
+
+
+    private static String validateCustomerTypeInput(Scanner scanner) {
+        System.out.println("1. Regular Customer\n2. Premium Customer");
+        for (int i = 0; i < maxRetries; i++) {
+            System.out.print("Select type (1-2): ");
+            String input = scanner.nextLine();
+            if (input.equals("1") || input.equals("2")) return input;
+            System.out.println("Invalid selection. Choose 1 or 2.");
+        }
+        System.out.println("Too many invalid attempts. Returning to main menu.");
+        return null;
+    }
+
+    private static String validateAccountTypeInput(Scanner scanner) {
+        System.out.println("1. Savings Account\n2. Checking Account");
+        for (int i = 0; i < maxRetries; i++) {
+            System.out.print("Select type (1-2): ");
+            String input = scanner.nextLine();
+            if (input.equals("1") || input.equals("2")) return input;
+            System.out.println("Invalid selection. Choose 1 or 2.");
+        }
+        System.out.println("Too many invalid attempts. Returning to main menu.");
+        return null;
+    }
+
+    private static String validateTransactionTypeInput(Scanner scanner) {
+        System.out.println("1. Savings Account\n2. Checking Account");
+        for (int i = 0; i < maxRetries; i++) {
+            System.out.print("Select type (1-2): ");
+            String input = scanner.nextLine();
+            if (input.equals("1") || input.equals("2")) return input;
+            System.out.println("Invalid selection. Choose 1 or 2.");
+        }
+        System.out.println("Too many invalid attempts. Returning to main menu.");
+        return null;
+    }
+
+    private static double validateInitialDepositInput(Scanner scanner, String customerType, String accountType) {
+        final int premiumDeposit = 10000 ;
+        final int savingsDepost = 500;
+        for (int i = 0; i < maxRetries; i++) {
+            System.out.print("Enter initial deposit amount: ");
+            try {
+                double amount = Double.parseDouble(scanner.nextLine());
+                if (amount < 0) {
+                    System.out.println("Deposit cannot be negative.");
+                } else if (customerType.equals("2") && amount < premiumDeposit) {
+                    System.out.println("Premium customers require a minimum deposit of $10,000.");
+                } else if (accountType.equals("1") && amount < savingsDepost) {
+                    System.out.println("Savings account requires a minimum deposit of $500.");
+                } else {
+                    return amount;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid amount. Must be a number.");
+            }
+        }
+        System.out.println("Too many invalid attempts. Returning to main menu.");
+        return -1;
+    }
+
+    private static  double validateTransactionAmount(Scanner scanner){
+        for (int i = 0; i < maxRetries; i++) {
+            System.out.print("Enter initial deposit amount: ");
+            try {
+                double amount = Double.parseDouble(scanner.nextLine());
+                if (amount < 0) {
+                    System.out.println("Deposit cannot be negative.");
+               } else {
+                    return amount;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid amount. Must be a number.");
+            }
+        }
+        System.out.println("Too many invalid attempts. Returning to main menu.");
+        return -1;
+    }
+    private static String validateCustomerContactInput(Scanner scanner) {
+        for (int i = 0; i < maxRetries; i++) {
+            System.out.print("Enter customer contact: ");
+            String contact = scanner.nextLine();
+            if (!contact.isBlank() && contact.matches("^[0-9]+$")) return contact;
+            System.out.println("Invalid contact. Must contain only digits.");
+        }
+        System.out.println("Too many invalid attempts. Returning to main menu.");
+        return null;
+    }
+
+    private static String validateCustomerAddressInput(Scanner scanner) {
+        for (int i = 0; i < maxRetries; i++) {
+            System.out.print("Enter customer address: ");
+            String address = scanner.nextLine();
+            if (!address.isBlank()) return address;
+            System.out.println("Invalid address. Cannot be empty.");
+        }
+        System.out.println("Too many invalid attempts. Returning to main menu.");
+        return null;
+    }
+
+    private static String validateTransactionConfirmation(Scanner scanner){
+        System.out.print("Confirm transaction? (Y/N): ");
+        for (int i = 0; i < 2; i++) {
+            System.out.print("Select type (Y/N): ");
+            String input = scanner.nextLine();
+            if (input.equals("Y") || input.equals("N")) return input;
+            System.out.println("Invalid selection. Choose Y or N.");
+        }
+        System.out.println("Too many invalid attempts. Returning to main menu.");
+        return null;
     }
 
 
