@@ -1,20 +1,19 @@
+package com.service;
 import java.util.ArrayList;
+import com.models.Transaction;
 
-public class TransactionManagement {
-//}
+public class TransactionManagement {    
+    public Transaction transactions[] = new Transaction[200];
+    public int transactionCount;
 
-//class TransactionManager{
-    private Transactions.Transaction transactions[] = new Transactions.Transaction[200];
-    private int transactionCount;
-
-    public void addTransaction(Transactions.Transaction transaction){
+    public void addTransaction(Transaction transaction){
         transactions[transactionCount]=transaction;
         transactionCount++;
     }
 
-    public ArrayList<Transactions.Transaction> viewTransactionByAccount(String accountNumber) {
-        ArrayList<Transactions.Transaction> accountTransactions = new ArrayList<>();
-        Transactions.Transaction trnx;
+    public ArrayList<Transaction> viewTransactionByAccount(String accountNumber) {
+        ArrayList<Transaction> accountTransactions = new ArrayList<>();
+        Transaction trnx;
         for (int i = 0 ; i < transactionCount ; i++){
             trnx = transactions[i];
             if (trnx.getAccountNumber().equals(accountNumber)){
