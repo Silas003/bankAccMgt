@@ -1,13 +1,15 @@
+package com.service;
 import java.util.ArrayList;
 import java.util.Arrays;
+import com.models.Account;
 
 public class AccountManagement {
 
 //    public class AccountManager{
-        private static Accounts.Account[] accounts = new Accounts.Account[50];
+        private static Account[] accounts = new Account[50];
         public static int accountCount;
 
-        public static void addAccount(Accounts.Account account){
+        public static void addAccount(Account account){
 
             if (accountCount < accounts.length) {
                 accounts[accountCount++] = account;
@@ -17,23 +19,23 @@ public class AccountManagement {
 
         }
 
-        public static Accounts.Account findAccount(String accountNumber){
+        public static Account findAccount(String accountNumber){
 
             for(int i = 0; i < accountCount; i++){
-                Accounts.Account account = accounts[i];
+                Account account = accounts[i];
                 if(account.getAccountNumber().equals(accountNumber)) return account;
             }
             return null;
 
         }
 
-        public static Accounts.Account[] viewAllAccounts(){
+        public static Account[] viewAllAccounts(){
             return accounts;
         }
 
         public double getTotalBalance(){
             double totalBalance = 0;
-            Accounts.Account account ;
+            Account account ;
             System.out.println(accountCount);
             for ( int i = 0 ; i < accountCount; i++){
                 account = accounts[i];

@@ -1,9 +1,11 @@
+import com.service.*;
+import com.models.*;
+import com.utilities.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
-import utilities.CustomUtils;
 
 public class Main {
 
@@ -38,16 +40,9 @@ public class Main {
     }
 
     private static void mainMenu(){
-        String[] menuItems = new String[]{
-                "1. Create Account \n",
-                "2. View Accounts \n",
-                "3. Process Transaction \n",
-                "4.View Transaction History \n",
-                "5.Exit"
-        };
-        for( String item : menuItems){
-            System.out.println(item);
-        }
+
+        System.out.println( "1. Create Account \n2. View Accounts \n3. Process Transaction \n4.View Transaction History \n5.Exit");
+
         System.out.print("Enter choice: ");
         String userInput = scanner.nextLine();
 
@@ -81,12 +76,10 @@ public class Main {
         int maxRetries = 0;
         String customerName = "",customerAddress = "",customerContact = "";
         int customerAge = 0;
-        Customers customers = new Customers();
-        Accounts accounts = new Accounts();
-        Customers.Customer newRegularCustomer = null;
-        Customers.Customer newPremiumCustomer = null ;
-        Accounts.Account newSavingsAccount;
-        Accounts.Account newCheckingAccount;
+        Customer newRegularCustomer = null;
+        Customer newPremiumCustomer = null ;
+        SavingsAccount newSavingsAccount;
+        CheckingAccount newCheckingAccount;
 
 
         System.out.println("ACCOUNT CREATION");
@@ -105,12 +98,12 @@ public class Main {
         if(accounTypeInput == null) return;
             switch (customerTypeInput){
                 case "1":
-                    newRegularCustomer = customers.new RegularCustomer(customerName,customerAge, customerContact, customerAddress);
+                    newRegularCustomer = new RegularCustomer(customerName,customerAge, customerContact, customerAddress);
 
                     break;
 
                 case "2":
-                    newPremiumCustomer = customers.new PremiumCustomer(customerName,customerAge,customerContact,customerAddress);
+                    newPremiumCustomer = new PremiumCustomer(customerName,customerAge,customerContact,customerAddress);
 
                     break;
 
@@ -122,12 +115,12 @@ public class Main {
             switch (accounTypeInput){
                 case "1":
                     if(customerTypeInput.equals("1")){
-                        newSavingsAccount = accounts.new SavingsAccount(newRegularCustomer,initialDepositAmount);
+                        newSavingsAccount = new SavingsAccount(newRegularCustomer,initialDepositAmount);
                         accManagement.addAccount(newSavingsAccount);
                         System.out.println("Account created succesfully!");
                         System.out.println(newSavingsAccount);
                     }else if(customerTypeInput.equals("2")){
-                         newSavingsAccount = accounts.new SavingsAccount(newPremiumCustomer,initialDepositAmount);
+                         newSavingsAccount = new SavingsAccount(newPremiumCustomer,initialDepositAmount);
                         accManagement.addAccount(newSavingsAccount);
                         System.out.println("Account created succesfully!");
                         System.out.println(newSavingsAccount);
@@ -137,12 +130,12 @@ public class Main {
 
                 case "2":
                     if(customerTypeInput.equals("1")){
-                         newCheckingAccount = accounts.new CheckingAccount(newRegularCustomer,initialDepositAmount);
+                         newCheckingAccount = new CheckingAccount(newRegularCustomer,initialDepositAmount);
                         accManagement.addAccount(newCheckingAccount);
                         System.out.println("Account created succesfully!");
                         System.out.println(newCheckingAccount);
                     }else if(customerTypeInput.equals("2")){
-                         newCheckingAccount = accounts.new CheckingAccount(newPremiumCustomer,initialDepositAmount);
+                         newCheckingAccount = new CheckingAccount(newPremiumCustomer,initialDepositAmount);
                         accManagement.addAccount(newCheckingAccount);
                         System.out.println("Account created succesfully!");
                         System.out.println(newCheckingAccount);
@@ -168,14 +161,14 @@ public class Main {
 
         String accountNumber = CustomUtils.validateAccountNumberInput(scanner);
         if (accountNumber == null) return;
-        Transactions transactions = new Transactions()  ;
-
-        Accounts.Account userAccount = accManagement.findAccount(accountNumber.toUpperCase());
-
+        Account userAccount = accManagement.findAccount(accountNumber.toUpperCase());
+        if(userAccount == null){
+            System.out.println("Acccont not found.Returning to main menu");
+            return;
+        }
 
         String transactionType = CustomUtils.validateTransactionTypeInput(scanner);
         if(transactionType == null) return;
-        System.out.print("Enter amount: ");
         double amount = CustomUtils.validateTransactionAmount(scanner);
         if (amount == -1 )return;
         double balanceAfter = transactionType.equals("1") ? userAccount.getBalance() + amount : userAccount.getBalance() - amount;
@@ -186,35 +179,45 @@ public class Main {
         System.out.printf("Account: %s\n",userAccount.getAccountNumber());
         System.out.printf("Type: %s\n",trnType.get(transactionType));
         System.out.printf("Amount: $%s\n",amount);
-        System.out.printf("Previous Balance: $%s\n",userAccount.getBalance());
-        System.out.printf("New Balance: $%s\n",balanceAfter);
+        System.out.printf("Previous Balance: $%.2f\n",userAccount.getBalance());
+        System.out.printf("New Balance: $%.2f\n",balanceAfter);
         System.out.printf("Date/Time: %s\n", transactionDateTime );
 
         String confirmation = CustomUtils.validateTransactionConfirmation(scanner);
         if(confirmation == null) return;
-        Transactions.Transaction trnx;
+        Transaction trnx;
+        boolean transactionSuccess ;
         switch (confirmation.toUpperCase()) {
             case "Y":
                 switch(transactionType){
                     case "1":
-                        userAccount.deposit(amount);
-                         trnx =  transactions.new Transaction(userAccount.getAccountNumber(), "Deposit",amount,
-                                balanceAfter,transactionDateTime);
-                         trnxManagement.addTransaction(trnx);
-                        System.out.println("Transactions created sucessfully!");
-                        System.out.println(trnx);
+                        transactionSuccess = userAccount.processTransaction(amount, trnType.get(transactionType));
+                        if(transactionSuccess){
+                            trnx =  new Transaction(userAccount.getAccountNumber(), "Deposit",amount,
+                                    balanceAfter,transactionDateTime);
+                            trnxManagement.addTransaction(trnx);
+                            System.out.println("Transactions created sucessfully!");
+                            System.out.println(trnx);
+                        }else{
+                            System.out.println("Transaction failed!");
+                        }
                         break;
 
                     case "2":
                         double minimumBalance = 500;
-                        if(!(balanceAfter < minimumBalance && userAccount.getAccountType().equals("Savings"))){
-                            userAccount.withdraw(amount);
-                         trnx =  transactions.new Transaction(userAccount.getAccountNumber(),"Withdrawal",amount,
-                                balanceAfter,transactionDateTime);
-                        trnxManagement.addTransaction(trnx);
+                        if(!(balanceAfter < minimumBalance && userAccount.getAccountType().equalsIgnoreCase("Savings"))  ){
+                           transactionSuccess = userAccount.processTransaction(amount, trnType.get(transactionType));
+                           if(transactionSuccess){
+                            trnx =  new Transaction(userAccount.getAccountNumber(),"Withdrawal",amount,balanceAfter,transactionDateTime) ; 
+                            trnxManagement.addTransaction(trnx);
+                            System.out.println("Transactions created sucessfully!");
+                            System.out.println(trnx);
+                        }else{
+                            System.out.println("Transaction failed!");
+                        }
                         }else{
                             System.out.println("You cannot withdraw amount at this moment.You would go before minimum balance for a savings account");
-                            userCurrentSession = 3;
+ 
                             return ;
                         }
                         
@@ -243,20 +246,20 @@ public class Main {
         System.out.println("========================");
         String accountNumber = CustomUtils.validateAccountNumberInput(scanner);
         if (accountNumber == null) return;
-        Accounts.Account account = accManagement.findAccount(accountNumber.toUpperCase());
+        Account account = accManagement.findAccount(accountNumber.toUpperCase());
         
 
         double totalDeposits = 0;
         double totalWithdrawals =  0;
 
         if(account != null){
-            ArrayList<Transactions.Transaction> tnx = trnxManagement.viewTransactionByAccount(accountNumber.toUpperCase());
+            ArrayList<Transaction> tnx = trnxManagement.viewTransactionByAccount(accountNumber.toUpperCase());
             System.out.printf("Account: %s - %s\nAccount Type: %s\nCurrent Balance: %.2f\n\n",account.getAccountNumber(),account.getCustomer(),account.getAccountType(),account.getBalance());
             System.out.println("TRANSACTION HISTORY");
             System.out.println("=====================================================================");
             System.out.println("TXN ID | DATE/TIME          | TYPE    | AMOUNT    | BALANCE");
 
-            for ( Transactions.Transaction tn : tnx){
+            for ( Transaction tn : tnx){
                 if(tn.getType().equals("Deposit")){
                     totalDeposits += tn.getAmount();
                 }else if(tn.getType().equals("Withdrawal")){totalWithdrawals += tn.getAmount();
@@ -287,9 +290,9 @@ public class Main {
         System.out.println("====================================================");
 
 
-        Accounts.Account[] allAccounts = accManagement.viewAllAccounts();
+        Account[] allAccounts = accManagement.viewAllAccounts();
         for (int i = 0; i < accManagement.accountCount; i++) {
-            Accounts.Account account = allAccounts[i];
+            Account account = allAccounts[i];
             System.out.printf("%s | %s |  %s |  $%.2f | %s |  %s\n",
                     account.getAccountNumber(),
                     account.getCustomer(),

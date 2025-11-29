@@ -1,13 +1,9 @@
+package com.models;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Transactions {
 
-    interface Transactable{
-        boolean processTransactions(double amount, String type);
-    }
-
-    class Transaction{
+public class Transaction{
         static int transactionCounter;
         private String transactionId;
         private String type;
@@ -70,7 +66,7 @@ public class Transactions {
         private void setTimeStamp(String dateTime){
             this.timeStamp = dateTime;
         }
-        Transaction(String accountNumber,String type,double amount,double balanceAfter,String dateTime){
+        public Transaction(String accountNumber,String type,double amount,double balanceAfter,String dateTime){
             this();
             setAccountNumber(accountNumber);
             setAmount(amount);
@@ -83,5 +79,5 @@ public class Transactions {
             return this;
         }
     }
-}
+
 

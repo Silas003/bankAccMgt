@@ -1,4 +1,4 @@
-package utilities;
+package com.utilities;
 import java.util.Scanner;
 
 public class CustomUtils{
@@ -100,7 +100,7 @@ public class CustomUtils{
 
     public static  double validateTransactionAmount(Scanner scanner){
         for (int i = 0; i < maxRetries; i++) {
-            System.out.print("Enter initial deposit amount: ");
+            System.out.print("Enter amount: ");
             try {
                 double amount = Double.parseDouble(scanner.nextLine());
                 if (amount < 0) {
@@ -119,8 +119,8 @@ public class CustomUtils{
         for (int i = 0; i < maxRetries; i++) {
             System.out.print("Enter customer contact: ");
             String contact = scanner.nextLine();
-            if (!contact.isBlank() && contact.matches("^[0-9]+$")) return contact;
-            System.out.println("Invalid contact. Must contain only digits.");
+            if (!contact.isBlank() && contact.matches("^[0-9]+$") && contact.length() == 10) return contact;
+            System.out.println("Invalid contact. Must contain only digits and be 10 digits long.");
         }
         System.out.println("Too many invalid attempts. Returning to main menu.");
         return null;
@@ -138,9 +138,9 @@ public class CustomUtils{
     }
 
     public static String validateTransactionConfirmation(Scanner scanner){
-        System.out.print("Confirm transaction? (Y/N): ");
+        
         for (int i = 0; i < 2; i++) {
-            System.out.print("Select type (Y/N): ");
+            System.out.print("Confirm transaction? (Y/N): ");
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("Y") || input.equalsIgnoreCase("N")) return input;
             System.out.println("Invalid selection. Choose Y or N.");

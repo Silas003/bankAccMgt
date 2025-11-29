@@ -1,6 +1,6 @@
-public class Customers {
+package com.models;
 
-    public abstract class Customer{
+public  abstract class Customer{
         private String customerId;
         private String name;
         private int age;
@@ -63,52 +63,7 @@ public class Customers {
         abstract String getCustomerType();
     }
 
-    public  class RegularCustomer extends Customer{
-
-        RegularCustomer(String name,int age, String contact, String address){
-            super(name,age,contact,address);
-        }
-        @Override
-        Customer displayCustomerDetails(){
-            return this;
-        }
-
-        @Override
-        String getCustomerType(){
-            return "regular";
-        }
 
 
-    }
 
-    public  class PremiumCustomer extends Customer{
-
-        private double minimumBalance = 10000;
-
-        PremiumCustomer(String name,int age, String contact, String address){
-            super(name,age,contact,address);
-        }
-
-        public double getMinimumBalance(){
-            return this.minimumBalance;
-        }
-
-        public void setMinimumBalance(double minimumBalance){
-            this.minimumBalance = minimumBalance;
-        }
-        @Override
-        Customer displayCustomerDetails(){
-            return this;
-        }
-
-        @Override
-        String getCustomerType(){
-            return "Premium";
-        }
-
-        public boolean hasWaivedFees(){
-            return true;
-        }
-    }
-}
-
+    
