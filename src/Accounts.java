@@ -92,7 +92,7 @@ public class Accounts {
         }
 
         @Override
-        String getAccountType() {
+        public String getAccountType() {
             return "Savings";
         }
 
@@ -109,7 +109,7 @@ public class Accounts {
         private String getInterestRate(){
             return String.format("%.1f%%",interestRate*100);
         }
-        private double getMinimumBalance(){
+        public double getMinimumBalance(){
             return minimumBalance;
         }
         @Override
@@ -169,7 +169,7 @@ public class Accounts {
             return this.monthlyFee;
         }
         public void applyMonthlyFee(){
-            this.setBalance(-10);
+            this.monthlyFee = -10 ;
         }
 
         @Override

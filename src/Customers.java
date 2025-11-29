@@ -10,6 +10,7 @@ public class Customers {
         static int customerCounter;
 
         Customer(){
+            setCustomerId();
             customerCounter++;
         }
 
@@ -19,7 +20,7 @@ public class Customers {
         }
 
         Customer(String name,int age, String contact, String address){
-            customerCounter++;
+            this();
             setName(name);
             setAge(age);
             setContact(contact);
@@ -30,8 +31,8 @@ public class Customers {
             return this.customerId;
         }
 
-        public void setCustomerId(String customerId) {
-            this.customerId = customerId;
+        public void setCustomerId() {
+            this.customerId = "CUS"+customerCounter;
         }
         public String getName() {
             return this.name;

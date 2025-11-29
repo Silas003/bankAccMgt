@@ -19,12 +19,12 @@ public class AccountManagement {
 
         public static Accounts.Account findAccount(String accountNumber){
 
-            for(Accounts.Account account: accounts){
-                if(account.getAccountNumber().equals(accountNumber)){
-                    return account;
-                }
+            for(int i = 0; i < accountCount; i++){
+                Accounts.Account account = accounts[i];
+                if(account.getAccountNumber().equals(accountNumber)) return account;
             }
             return null;
+
         }
 
         public static Accounts.Account[] viewAllAccounts(){
