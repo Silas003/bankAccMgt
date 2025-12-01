@@ -1,110 +1,78 @@
+
 package com.service;
 import com.utilities.CustomUtils;
 import java.util.Scanner;
 import com.models.*;
 
-/**
- * Service layer for account-related business operations and user interactions.
- * 
- * <p>This class provides high-level account management functionality, coordinating
- * between the user interface (via Scanner) and the data management layer (AccountManagement).
- * It handles the complete account creation workflow and account listing operations.</p>
- * 
- * <p>Key responsibilities:
- * <ul>
- *   <li>Account creation with customer information collection</li>
- *   <li>Account listing and display</li>
- *   <li>User input validation coordination</li>
- *   <li>Customer and account type selection</li>
- * </ul>
- * </p>
- * 
- * <p>The service validates all user inputs through utility methods before proceeding
- * with account creation, ensuring data integrity and providing user-friendly error messages.</p>
- * 
- * @author Bank Account Management Team
- * @version 1.0
- * @since 1.0
- * @see AccountManagement
- * @see CustomUtils
- */
+// Service layer for account-related business operations and user interactions.
+// Provides high-level account management functionality, coordinating between
+// the user interface (via Scanner) and the data management layer (AccountManagement).
+// Handles the complete account creation workflow and account listing operations.
+//
+// Key responsibilities:
+// - Account creation with customer information collection
+// - Account listing and display
+// - User input validation coordination
+// - Customer and account type selection
+//
+// The service validates all user inputs through utility methods before proceeding
+// with account creation, ensuring data integrity and providing user-friendly error messages.
 public class AccountService {
 
-    /** Data management layer for account operations */
+    // Data management layer for account operations
     private final AccountManagement accountManagement;
-    
-    /** Scanner instance for reading user input */
+
+    // Scanner instance for reading user input
     private final Scanner scanner;
 
-    /**
-     * Constructs a new AccountService with the provided dependencies.
-     * 
-     * @param accountManagement The account management layer for data operations
-     * @param scanner The Scanner instance for reading user input
-     */
+    // Constructs a new AccountService with the provided dependencies.
     public AccountService(AccountManagement accountManagement, Scanner scanner) {
         this.accountManagement = accountManagement;
         this.scanner = scanner;
     }
 
-    /**
-     * Guides the user through the account creation process.
-     * 
-     * <p>This method orchestrates the complete account creation workflow:
-     * <ol>
-     *   <li>Collects and validates customer information (name, age, contact, address)</li>
-     *   <li>Prompts for customer type selection (Regular or Premium)</li>
-     *   <li>Prompts for account type selection (Savings or Checking)</li>
-     *   <li>Validates initial deposit amount based on customer and account type requirements</li>
-     *   <li>Creates the appropriate Customer and Account objects</li>
-     *   <li>Adds the account to the system and displays confirmation</li>
-     * </ol>
-     * </p>
-     * 
-     * <p>If any validation step fails, the process is aborted and the user is returned
-     * to the main menu. All validations are performed through CustomUtils methods
-     * with retry logic and user-friendly error messages.</p>
-     * 
-     * <p>Minimum deposit requirements:
-     * <ul>
-     *   <li>Premium customers: $10,000</li>
-     *   <li>Savings accounts: $500</li>
-     * </ul>
-     * </p>
-     */
-    public void createAccount(){
+    // Guides the user through the account creation process.
+    // Workflow:
+    // 1. Collect and validate customer information (name, age, contact, address)
+    // 2. Prompt for customer type (Regular or Premium)
+    // 3. Prompt for account type (Savings or Checking)
+    // 4. Validate initial deposit amount based on requirements
+    // 5. Create Customer and Account objects
+    // 6. Add account to the system and display confirmation
+    public void createAccount() {
 
-        String customerName,customerAddress,customerContact;
+        String customerName, customerAddress, customerContact;
         int customerAge;
 
         System.out.println("ACCOUNT CREATION");
         System.out.println("====================================");
         customerName = CustomUtils.validateCustomerNameInput(scanner);
-        if(customerName == null) return;
+        if (customerName == null) return;
         customerAge = CustomUtils.validateCustomerAgeInput(scanner);
-        if(customerAge == -1) return;
+        if (customerAge == -1) return;
         customerContact = CustomUtils.validateCustomerContactInput(scanner);
-        if(customerContact == null) return;
+        if (customerContact == null) return;
         customerAddress = CustomUtils.validateCustomerAddressInput(scanner);
-        if(customerAddress == null) return;
+        if (customerAddress == null) return;
         String customerTypeInput = CustomUtils.validateCustomerTypeInput(scanner);
-        if(customerTypeInput == null) return;
-        String  accounTypeInput = CustomUtils.validateAccountTypeInput(scanner);
-        if(accounTypeInput == null) return;
- 
-        double initialDepositAmount = CustomUtils.validateInitialDepositInput(scanner,customerTypeInput,accounTypeInput);
+        if (customerTypeInput == null) return;
+        String accounTypeInput = CustomUtils.validateAccountTypeInput(scanner);
+        if (accounTypeInput == null) return;
+
+        double initialDepositAmount = CustomUtils.validateInitialDepositInput(scanner, customerTypeInput, accounTypeInput);
+
         // Determine customer type
         Customer customer;
         switch (customerTypeInput) {
-        case "1":
-            customer = new RegularCustomer(customerName, customerAge, customerContact, customerAddress);
-            break;
-        case "2":
-            customer = new PremiumCustomer(customerName, customerAge, customerContact, customerAddress);
-            break;
-        default:
-            System.out.println("Invalid customer type. Account creation aborted.");
-            return;
+            case "1":
+                customer = new RegularCustomer(customerName, customerAge, customerContact, customerAddress);
+                break;
+            case "2":
+                customer = new PremiumCustomer(customerName, customerAge, customerContact, customerAddress);
+                break;
+            default:
+                System.out.println("Invalid customer type. Account creation aborted.");
+                return;
         }
 
         // Determine account type
@@ -121,40 +89,17 @@ public class AccountService {
                 return;
         }
 
-    // Add account and display confirmation
-    accountManagement.addAccount(newAccount);
-    System.out.println("Account created successfully!");
-    System.out.println(newAccount);
-
+        // Add account and display confirmation
+        accountManagement.addAccount(newAccount);
+        System.out.println("Account created successfully!");
+        System.out.println(newAccount);
 
         CustomUtils.promptEnterKey(scanner);
     }
-    
-    /**
-     * Displays a formatted listing of all accounts in the system.
-     * 
-     * <p>Retrieves all accounts from the management layer and displays them in a
-     * tabular format. The display includes:
-     * <ul>
-     *   <li>Account number</li>
-     *   <li>Customer name</li>
-     *   <li>Account type (Savings or Checking)</li>
-     *   <li>Current balance</li>
-     *   <li>Account status</li>
-     *   <li>Account-specific details (overdraft limit, interest rate, etc.)</li>
-     * </ul>
-     * </p>
-     * 
-     * <p>Also displays summary information:
-     * <ul>
-     *   <li>Total number of accounts in the system</li>
-     *   <li>Total balance across all accounts</li>
-     * </ul>
-     * </p>
-     * 
-     * <p>After displaying the information, waits for user to press Enter before
-     * returning to the main menu.</p>
-     */
+
+    // Displays a formatted listing of all accounts in the system.
+    // Shows account number, customer name, account type, balance, status, and account-specific details.
+    // Also displays summary info: total accounts and total balance.
     public void viewAllAccounts() {
         System.out.println("ACCOUNT LISTING");
         System.out.println("====================================================");
@@ -174,8 +119,7 @@ public class AccountService {
         }
 
         System.out.printf("Total Accounts: %d\nTotal Bank Balance: $%.2f\n",
-accountManagement.getAccountCount(), accountManagement.getTotalBalance());
+                accountManagement.getAccountCount(), accountManagement.getTotalBalance());
         CustomUtils.promptEnterKey(scanner);
     }
-
 }
