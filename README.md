@@ -72,11 +72,11 @@ A **Java-based console application** for managing bank accounts, customers, and 
 ## How to Run
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/bank-account-management.git
+   git clone https://github.com/Silas003/BankAccMgt.git
    ```
 2. Navigate to the project directory:
    ```bash
-   cd bank-account-management
+   cd BankAccMgt
    ```
 3. Compile and run:
    ```bash
@@ -87,7 +87,6 @@ A **Java-based console application** for managing bank accounts, customers, and 
 ---
 
 ## Future Enhancements
--  Replace fixed-size arrays with dynamic collections or database integration.
 -  Implement monthly fee deduction logic.
 -  Add interest calculation and periodic updates.
 -  Improve UI with a graphical interface or web-based front end.
