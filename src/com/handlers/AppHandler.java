@@ -2,76 +2,67 @@ package com.handlers;
 import com.service.*;
 import java.util.Scanner;
 
-/**
+/*
  * Application handler that manages the main menu and user interaction flow.
- * 
- * <p>This class serves as the primary controller for the Bank Account Management System,
+ *
+ * This class serves as the primary controller for the Bank Account Management System,
  * coordinating between the account and transaction services to provide a unified
  * user interface. It maintains the main application loop and routes user selections
- * to the appropriate service methods.</p>
- * 
- * <p>The handler supports the following operations:
- * <ul>
- *   <li>Account creation</li>
- *   <li>Account viewing</li>
- *   <li>Transaction processing</li>
- *   <li>Transaction history viewing</li>
- * </ul>
- * </p>
- * 
- * @author Bank Account Management Team
- * @version 1.0
- * @since 1.0
+ * to the appropriate service methods.
+ *
+ * The handler supports the following operations:
+ * - Account creation
+ * - Account viewing
+ * - Transaction processing
+ * - Transaction history viewing
  */
-public class AppHandler{
-    /** Service for handling account-related operations */
-    private final AccountService accountService;
-    
-    /** Service for handling transaction-related operations */
-    private final TransactionServices transactionService;
-    
-    /** Management layer for account data operations */
-    private final AccountManagement accountManagement = new AccountManagement();
-    
-    /** Management layer for transaction data operations */
-    private final TransactionManagement transactionManagement = new TransactionManagement();
-    
-    /** Scanner instance for reading user input from console */
-    private final Scanner scanner;
+public class AppHandler {
 
-    /**
-     * Constructs a new AppHandler with the provided Scanner.
-     * 
-     * <p>Initializes the account and transaction services with their respective
-     * management dependencies and the shared scanner for user input.</p>
-     * 
-     * @param scanner The Scanner instance to use for reading user input
+    // Service for handling account-related operations
+    private final AccountService accountService;
+
+    // Service for handling transaction-related operations
+    private final TransactionServices transactionService;
+
+    // Management layer for account data operations
+    private final AccountManagement accountManagement = new AccountManagement();
+
+    // Management layer for transaction data operations
+    private final TransactionManagement transactionManagement = new TransactionManagement();
+
+    // Scanner instance for reading user input from console
+    private final Scanner scanner = new Scanner(System.in);
+
+    /*
+     * Constructs a new AppHandler.
+     *
+     * Initializes the account and transaction services with their respective
+     * management dependencies and the shared scanner for user input.
      */
-    public AppHandler(Scanner scanner) {
-        this.scanner = scanner;
+    public AppHandler() {
         accountService = new AccountService(accountManagement, scanner);
         transactionService = new TransactionServices(accountManagement, transactionManagement, scanner);
     }
 
-    /**
+    /*
      * Starts the main application loop and displays the interactive menu.
-     * 
-     * <p>Continuously displays the main menu options and processes user selections
+     *
+     * Continuously displays the main menu options and processes user selections
      * until the user chooses to exit. Each menu option delegates to the appropriate
-     * service method for execution.</p>
-     * 
-     * <p>Menu options:
-     * <ol>
-     *   <li>Create Account - Opens account creation wizard</li>
-     *   <li>View Accounts - Displays all accounts in the system</li>
-     *   <li>Process Transaction - Handles deposits and withdrawals</li>
-     *   <li>View Transaction History - Shows transaction history for an account</li>
-     *   <li>Exit - Terminates the application</li>
-     * </ol>
-     * </p>
+     * service method for execution.
+     *
+     * Menu options:
+     * 1. Create Account - Opens account creation wizard
+     * 2. View Accounts - Displays all accounts in the system
+     * 3. Process Transaction - Handles deposits and withdrawals
+     * 4. View Transaction History - Shows transaction history for an account
+     * 5. Exit - Terminates the application
      */
     public void start() {
         boolean running = true;
+        System.out.println("||====================================||");
+        System.out.println("  BANK ACCOUNT MANAGEMENT - MAIN MENU");
+        System.out.println("||====================================||");
         while (running) {
             System.out.println("\n1. Create Account \n2. View Accounts \n3. Process Transaction \n4. View Transaction History \n5. Exit");
             System.out.print("Enter choice: ");
@@ -87,5 +78,4 @@ public class AppHandler{
             };
         }
     }
-
 }
