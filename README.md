@@ -78,6 +78,10 @@ A **Java-based console application** for managing bank accounts, customers, and 
    ```bash
    cd bank-account-management
    ```
+2. Navigate to the active branch:
+   ```bash
+   git checkout mastser
+   ```
 3. Compile and run:
    ```bash
    javac Main.java
