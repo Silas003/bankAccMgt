@@ -61,7 +61,7 @@ public class AppHandler {
     public void start() {
         boolean running = true;
         System.out.println("||====================================||");
-        System.out.println("  BANK ACCOUNT MANAGEMENT - MAIN MENU");
+        System.out.println("  BANK ACCOUNT MANAGEMENT - MAIN MENU-- THIS IS COMING FROM GITHUB ACTIONS");
         System.out.println("||====================================||");
         while (running) {
             System.out.println("\n1. Create Account \n2. View Accounts \n3. Process Transaction \n4. View Transaction History \n5. Exit");
