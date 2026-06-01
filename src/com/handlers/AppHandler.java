@@ -62,7 +62,7 @@ public class AppHandler {
         boolean running = true;
         System.out.println("||====================================||");
         System.out.println("  BANK ACCOUNT MANAGEMENT - MAIN MENU-- THIS IS COMING FROM GITHUB ACTIONS");
-        System.out.println("Making a new push to github")
+        System.out.println("Making a new push to github");
         System.out.println("||====================================||");
         while (running) {
             System.out.println("\n1. Create Account \n2. View Accounts \n3. Process Transaction \n4. View Transaction History \n5. Exit");
